@@ -31,9 +31,10 @@ class App extends Component {
     console.log(data)
     // your code here
 
-    var x_scale = d3.scaleLinear().domain([0,4]).range([0,800])
+    var x_scale = d3.scaleLinear().domain([0,4]).range([10,800])
     var font_scale = d3.scaleLinear().domain([0,d3.max(data, d=>d[1])]).range([10,60])
 
+    /*
     d3.select('.svg_parent')
     .selectAll('text')
     .data(data)
@@ -42,8 +43,36 @@ class App extends Component {
     .attr('x', (d, i)=> x_scale(i))
     .attr('y', 100)
     .attr('fill', 'black')
+    .transition()
+    .duration(5000)
     .attr('font-size', d=>font_scale(d[1]))
+    .attr('x', (d, i)=> x_scale(i))
+    .transition()
+    .duration(5000)
 
+    */
+
+    d3.select('.svg_parent')
+    .selectAll('text')
+    .data(data)
+    .join(
+        enter => enter.append('text') // Handle entering elements
+            .text(d => d[0])
+            .attr('x', (d, i) => x_scale(i))
+            .attr('y', 100)
+            .attr('fill', 'black')
+            .attr('font-size', 0)
+            .transition()
+            .duration(5000)
+            .attr('font-size', d => font_scale(d[1])),
+        
+        update => update // Handle updating elements
+          .transition()
+          .duration(5000)
+          .attr('x', (d, i) => x_scale(i))
+          .attr('fill', 'black')
+          .attr('font-size', d => font_scale(d[1])),
+    );
     
   }
 
