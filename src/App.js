@@ -29,34 +29,18 @@ class App extends Component {
   renderChart() {
     const data = this.state.wordFrequency.sort((a,b)=>b[1]-a[1]).slice(0,5)
     console.log(data)
+    
     // your code here
 
     var x_scale = d3.scaleLinear().domain([0,4]).range([10,800])
-    var font_scale = d3.scaleLinear().domain([0,d3.max(data, d=>d[1])]).range([10,60])
-
-    /*
-    d3.select('.svg_parent')
-    .selectAll('text')
-    .data(data)
-    .join('text')
-    .text(d=>d[0])
-    .attr('x', (d, i)=> x_scale(i))
-    .attr('y', 100)
-    .attr('fill', 'black')
-    .transition()
-    .duration(5000)
-    .attr('font-size', d=>font_scale(d[1]))
-    .attr('x', (d, i)=> x_scale(i))
-    .transition()
-    .duration(5000)
-
-    */
+    var font_scale = d3.scaleLinear().domain([0,d3.max(data, d=>d[1])]).range([10,50])
 
     d3.select('.svg_parent')
     .selectAll('text')
-    .data(data)
+    .data(data, d=>d[0])
     .join(
-        enter => enter.append('text') // Handle entering elements
+
+        enter => enter.append('text')
             .text(d => d[0])
             .attr('x', (d, i) => x_scale(i))
             .attr('y', 100)
@@ -66,12 +50,20 @@ class App extends Component {
             .duration(5000)
             .attr('font-size', d => font_scale(d[1])),
         
-        update => update // Handle updating elements
+        update => update
           .transition()
           .duration(5000)
-          .attr('x', (d, i) => x_scale(i))
+          .attr('x', function(d, i){
+            console.log(x_scale(i));
+            return x_scale(i);
+          } )
           .attr('fill', 'black')
-          .attr('font-size', d => font_scale(d[1])),
+          .attr('font-size', d => font_scale(d[1]))
+          .text(d => d[0]),
+
+        exit => exit
+          .remove()
+
     );
     
   }
