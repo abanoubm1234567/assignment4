@@ -29,7 +29,7 @@ class App extends Component {
   renderChart() {
     const data = this.state.wordFrequency.sort((a,b)=>b[1]-a[1]).slice(0,5)
     console.log(data)
-    
+
     // your code here
 
     var x_scale = d3.scaleLinear().domain([0,4]).range([10,800])
@@ -79,7 +79,7 @@ class App extends Component {
               }}
             > Generate WordCloud</button>
         </div>
-        <div className="child2"><svg className="svg_parent"></svg></div>
+        <div className="child2" ><svg className="svg_parent"  style={{  height: 200 , width: 1000}}></svg></div>
       </div>
     );
   }
